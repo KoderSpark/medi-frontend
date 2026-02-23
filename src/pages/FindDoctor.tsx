@@ -46,7 +46,8 @@ const FindDoctor = () => {
             if (service) queryParams.append("service", service);
             if (location) queryParams.append("location", location);
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/doctors?${queryParams.toString()}`);
+            const baseUrl = import.meta.env.VITE_API_URL || "";
+            const response = await fetch(`${baseUrl}/api/doctors?${queryParams.toString()}`);
             const data = await response.json();
 
             if (data.success) {

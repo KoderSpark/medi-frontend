@@ -64,7 +64,6 @@ const Admin = () => {
     { name: "Loading...", type: "", members: 0, status: "" }
   ]);
 
-  const [applications, setApplications] = React.useState<any[]>([]);
   const [queries, setQueries] = React.useState<any[]>([]);
   const [queryStats, setQueryStats] = React.useState({
     totalQueries: 0,
@@ -81,9 +80,6 @@ const Admin = () => {
       return false;
     }
   });
-  const [selectedApp, setSelectedApp] = React.useState<any | null>(null);
-  const [appDialogOpen, setAppDialogOpen] = React.useState(false);
-  const [viewerImage, setViewerImage] = React.useState<string | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
   const [selectedQuery, setSelectedQuery] = React.useState<any>(null);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -102,7 +98,6 @@ const Admin = () => {
 
 
   // Strict separation for admin-added pending partners
-  const [isAdminView, setIsAdminView] = React.useState(false);
   const [partnersPagination, setPartnersPagination] = React.useState({
     currentPage: 1,
     totalPages: 1,
@@ -466,22 +461,10 @@ const Admin = () => {
     }
   };
 
-  const openAppDialog = (app: any) => { setSelectedApp(app); setAppDialogOpen(true); };
-  const closeAppDialog = () => { setSelectedApp(null); setAppDialogOpen(false); };
-  const openViewer = (src: string) => setViewerImage(src);
-  const closeViewer = () => setViewerImage(null);
   const viewQuery = (query: any) => {
     setSelectedQuery(query);
     setViewDialogOpen(true);
   };
-
-  // Filter applications based on search
-  const filteredApplications = applications.filter(app =>
-    app.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.state?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.district?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   // Filter queries based on search
   const filteredQueries = queries.filter(query =>
@@ -581,21 +564,9 @@ const Admin = () => {
                 {/* Optional: Add recent activity here if dashboard feels empty */}
               </TabsContent>
 
-              {/* Main Tabs List - Visible only on Partners section */}
-              {(activeTab === 'partner-requests' || activeTab === 'manage-partners' || activeTab === 'manage-doctors') && (
-                <TabsList className="hidden lg:grid w-full grid-cols-5 p-1 bg-muted/50 rounded-lg sm:rounded-xl h-auto gap-1">
-                  <TabsTrigger
-                    value="partner-requests"
-                    className="flex items-center gap-1 sm:gap-2 py-2 sm:py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md sm:rounded-lg transition-all text-xs sm:text-sm"
-                  >
-                    <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
-                    <span className="truncate">Active Requests</span>
-                    {applications.length > 0 && (
-                      <Badge variant="destructive" className="h-4 w-4 sm:h-5 sm:w-5 p-0 flex items-center justify-center text-xs">
-                        {applications.length}
-                      </Badge>
-                    )}
-                  </TabsTrigger>
+              {/* Main Tabs List - Visible on management sections */}
+              {activeTab !== 'dashboard' && (
+                <TabsList className="hidden lg:grid w-full grid-cols-4 p-1 bg-muted/50 rounded-lg sm:rounded-xl h-auto gap-1">
                   <TabsTrigger
                     value="queries"
                     className="flex items-center gap-1 sm:gap-2 py-2 sm:py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-md sm:rounded-lg transition-all text-xs sm:text-sm"
@@ -1291,269 +1262,7 @@ const Admin = () => {
             </Tabs>
           </div>
 
-          {/* Application Detail Dialog */}
-          <Dialog open={appDialogOpen} onOpenChange={setAppDialogOpen}>
-            <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-hidden mx-2 sm:mx-4">
-              <DialogHeader>
-                <DialogTitle className="text-xl sm:text-2xl">Application Details</DialogTitle>
-                <DialogDescription className="text-sm sm:text-base">Review all details before making a decision</DialogDescription>
-              </DialogHeader>
-              {selectedApp && (
-                <div className="max-h-[60vh] overflow-y-auto pr-1 sm:pr-2 space-y-6 sm:space-y-8 mt-2">
-                  {/* Personal Details Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-blue-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Personal Details</h3>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Full Name</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.responsible?.name || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Age</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.responsible?.age || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Sex</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.responsible?.sex || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Date of Birth</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.responsible?.dob || 'Not specified'}</div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Business Details Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-green-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Business Details</h3>
-                    </div>
-                    <div className="space-y-4 sm:space-y-6">
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">
-                          {selectedApp.type === 'doctor' ? 'Clinic Name' : 'Center/Business Name'}
-                        </h4>
-                        <div className="text-sm sm:text-base">{selectedApp.name || 'Not specified'}</div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Address</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.address || 'Not specified'}</div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">State</h4>
-                          <div className="text-sm sm:text-base">{selectedApp.state || 'Not specified'}</div>
-                        </div>
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">District</h4>
-                          <div className="text-sm sm:text-base">{selectedApp.district || 'Not specified'}</div>
-                        </div>
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Pincode</h4>
-                          <div className="text-sm sm:text-base">{selectedApp.pincode || 'Not specified'}</div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Available Timings</h4>
-                          <div className="text-sm sm:text-base">
-                            {selectedApp.timeFrom && selectedApp.timeTo ? `${selectedApp.timeFrom} - ${selectedApp.timeTo}` : 'Not specified'}
-                          </div>
-                        </div>
-                        <div className="space-y-1">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Available Days</h4>
-                          <div className="text-sm sm:text-base">
-                            {selectedApp.dayFrom && selectedApp.dayTo ? `${selectedApp.dayFrom} - ${selectedApp.dayTo}` : 'Not specified'}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Website</h4>
-                        <div className="text-sm sm:text-base">
-                          {selectedApp.website ? (
-                            <a href={selectedApp.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline break-all">
-                              {selectedApp.website}
-                            </a>
-                          ) : 'Not specified'}
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Contact & Login Information Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-purple-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Contact & Login Information</h3>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Contact Email</h4>
-                        <div className="text-sm sm:text-base break-all">{selectedApp.contactEmail || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Contact Phone</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.contactPhone || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Login Email</h4>
-                        <div className="text-sm sm:text-base break-all">{selectedApp.email || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Partner Type</h4>
-                        <div className="text-sm sm:text-base capitalize">{selectedApp.type || 'Not specified'}</div>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Registration Details Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-orange-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Registration Details</h3>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Council Name</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.council?.name || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Council Number</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.council?.number || 'Not specified'}</div>
-                      </div>
-                      {(selectedApp.type === 'doctor' || selectedApp.type === 'dentist') && (
-                        <div className="space-y-1 sm:col-span-2">
-                          <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Specialization</h4>
-                          <div className="text-sm sm:text-base">{selectedApp.specialization || 'Not specified'}</div>
-                        </div>
-                      )}
-                    </div>
-                  </section>
-
-                  {/* Document Uploads Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-red-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Document Uploads</h3>
-                    </div>
-                    <div className="space-y-3 sm:space-y-4">
-                      <div>
-                        <h4 className="font-semibold mb-1 sm:mb-2 text-xs sm:text-sm text-muted-foreground">Certificate</h4>
-                        {selectedApp.certificateFile ? (
-                          selectedApp.certificateFile.includes('application/pdf') || selectedApp.certificateFile.toLowerCase().endsWith('.pdf') ? (
-                            <a
-                              href={assetUrl(selectedApp.certificateFile)}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 border rounded-lg hover:bg-blue-50 transition-colors text-xs sm:text-sm"
-                            >
-                              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
-                              View Certificate (PDF)
-                            </a>
-                          ) : (
-                            <img
-                              src={assetUrl(selectedApp.certificateFile)}
-                              alt="certificate"
-                              className="h-24 w-32 sm:h-32 sm:w-48 object-cover rounded-lg cursor-pointer border hover:shadow-md transition-all"
-                              onClick={() => openViewer(assetUrl(selectedApp.certificateFile))}
-                              onError={(e) => {
-                                e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjE2QzE0IDE3LjEgMTMuMSAxOCA5LjUgMTJDOS41IDE4IDkgMTcuMSAxOSA5QzkgOC45IDkuMSAxOCA5LjUgMTJDOS41IDE4IDEwIDE3LjEgMTAgMTZWMTRDMTAgMi45IDEwLjkgMiAxMiAyWk0xMiA3QzEyLjU1IDcgMTMgNy40NSAxMyA4UzEyLjU1IDkgMTIgOVMxMSA4LjU1IDExIDhTMTIuNDUgNyAxMiA3Wk0xMiAxNWMtMS42NiAwLTMtMS4zNC0zLTNTMTAuMzQgMTMgMTIgMTNTMTQuMzQgMTYgMTYgMTZTMzMuNjYgMTUgMTIgMTVaIiBmaWxsPSIjOWNhM2FmIi8+Cjwvc3ZnPgo=';
-                                e.currentTarget.alt = 'Image not available';
-                              }}
-                            />
-                          )
-                        ) : (
-                          <div className="text-xs sm:text-sm text-muted-foreground">No certificate uploaded</div>
-                        )}
-                      </div>
-
-                      {(selectedApp.type === 'doctor' || selectedApp.type === 'dentist') && selectedApp.clinicPhotos && selectedApp.clinicPhotos.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold mb-1 sm:mb-2 text-xs sm:text-sm text-muted-foreground">Clinic Photos ({selectedApp.clinicPhotos.length})</h4>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-                            {selectedApp.clinicPhotos.map((photo: string, index: number) => (
-                              <img
-                                key={index}
-                                src={assetUrl(photo)}
-                                alt={`clinic-${index + 1}`}
-                                className="h-16 sm:h-20 w-full object-cover rounded-lg cursor-pointer border hover:shadow-md transition-all"
-                                onClick={() => openViewer(assetUrl(photo))}
-                                onError={(e) => {
-                                  e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjE2QzE0IDE3LjEgMTMuMSAxOCA5LjUgMTJDOS41IDE4IDkgMTcuMSAxOSA5QzkgOC45IDkuMSAxOCA5LjUgMTJDOS41IDE4IDEwIDE3LjEgMTAgMTZWMTRDMTAgMi45IDEwLjkgMiAxMiAyWk0xMiA3QzEyLjU1IDcgMTMgNy40NSAxMyA4UzEyLjU1IDkgMTIgOVMxMSA4LjU1IDExIDhTMTIuNDUgNyAxMiA3Wk0xMiAxNWMtMS42NiAwLTMtMS4zNC0zLTNTMTAuMzQgMTMgMTIgMTNTMTQuMzQgMTYgMTYgMTZTMzMuNjYgMTUgMTIgMTVaIiBmaWxsPSIjOWNhM2FmIi8+Cjwvc3ZnPgo=';
-                                  e.currentTarget.alt = 'Image not available';
-                                }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </section>
-
-                  {/* Discount Information Section */}
-                  <section className="space-y-4 sm:space-y-6">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-1.5 h-6 sm:w-2 sm:h-8 bg-green-600 rounded-full"></div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Discount Information</h3>
-                    </div>
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Discount Amount</h4>
-                        <div className="text-sm sm:text-base">{selectedApp.discountAmount || 'Not specified'}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-xs sm:text-sm text-muted-foreground">Services/Procedures for Discount</h4>
-                        <div className="text-sm sm:text-base">
-                          {selectedApp.discountItems && selectedApp.discountItems.length > 0
-                            ? selectedApp.discountItems.join(', ')
-                            : 'Not specified'}
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  <DialogFooter className="flex flex-col sm:flex-row gap-2 pt-3 sm:pt-4">
-                    <Button variant="outline" onClick={closeAppDialog} className="text-sm w-full sm:w-auto">Close</Button>
-
-                  </DialogFooter>
-                </div>
-              )}
-            </DialogContent>
-          </Dialog>
-
-          {/* Image Viewer Dialog */}
-          <Dialog open={!!viewerImage} onOpenChange={(v) => { if (!v) setViewerImage(null); }}>
-            <DialogContent className="max-w-4xl w-full mx-2 sm:mx-4">
-              <DialogHeader>
-                <DialogTitle className="text-lg sm:text-xl">Document Preview</DialogTitle>
-                <DialogDescription className="text-sm sm:text-base">Enlarged view of the selected document</DialogDescription>
-              </DialogHeader>
-              <div className="flex justify-center items-center min-h-[50vh] sm:min-h-[60vh]">
-                {viewerImage && (
-                  <img
-                    src={viewerImage}
-                    alt="preview"
-                    className="max-h-[50vh] sm:max-h-[60vh] max-w-full object-contain rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjE2QzE0IDE3LjEgMTMuMSAxOCA5LjUgMTJDOS41IDE4IDkgMTcuMSAxOSA5QzkgOC45IDkuMSAxOCA5LjUgMTJDOS41IDE4IDEwIDE3LjEgMTAgMTZWMTRDMTAgMi45IDEwLjkgMiAxMiAyWk0xMiA3QzEyLjU1IDcgMTMgNy40NSAxMyA4UzEyLjU1IDkgMTIgOVMxMSA4LjU1IDExIDhTMTIuNDUgNyAxMiA3Wk0xMiAxNWMtMS42NiAwLTMtMS4zNC0zLTNTMTAuMzQgMTMgMTIgMTNTMTQuMzQgMTYgMTYgMTZTMzMuNjYgMTUgMTIgMTVaIiBmaWxsPSIjOWNhM2FmIi8+Cjwvc3ZnPgo=';
-                      e.currentTarget.alt = 'Image not available';
-                    }}
-                  />
-                )}
-              </div>
-              <DialogFooter>
-                <Button onClick={() => setViewerImage(null)} className="w-full sm:w-auto text-sm">Close Preview</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+{/* Dialogs Removed */}
 
           {/* Query View Dialog */}
           <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>

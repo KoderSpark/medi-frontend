@@ -1,8 +1,8 @@
 // API configuration
+// Use VITE_API_BASE_URL if set (e.g. in production).
+// In development, fall back to "" so requests use relative paths and go through the Vite proxy.
 const rawBase = import.meta.env.VITE_API_BASE_URL as string | undefined;
-const DEFAULT_BACKEND = "http://localhost:5000";
-const resolvedBase =
-  rawBase && rawBase.trim() !== "" ? rawBase : DEFAULT_BACKEND;
+const resolvedBase = rawBase && rawBase.trim() !== "" ? rawBase : "";
 const BASE = resolvedBase.replace(/\/+$/, "");
 
 export const apiUrl = (endpoint: string) => {
