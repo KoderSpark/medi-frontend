@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Search, Phone, Mail, Building2, User } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
+import { apiUrl } from "@/lib/api";
 
 interface Doctor {
     _id: string;
@@ -46,8 +47,7 @@ const FindDoctor = () => {
             if (service) queryParams.append("service", service);
             if (location) queryParams.append("location", location);
 
-            const baseUrl = import.meta.env.VITE_API_URL || "";
-            const response = await fetch(`${baseUrl}/api/doctors?${queryParams.toString()}`);
+            const response = await fetch(apiUrl(`api/doctors?${queryParams.toString()}`));
             const data = await response.json();
 
             if (data.success) {
