@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import heroImage from "../assets/hero-healthcare.jpg";
-import { 
+import {
   ArrowRight,
   CheckCircle,
   Shield,
@@ -96,36 +96,36 @@ const Index = () => {
         <link rel="canonical" href="https://medicostsaver.com/" />
       </Helmet>
       <div className="min-h-screen bg-white">
-      {/* Full Height Banner */}
-      <section className="min-h-screen relative flex items-center justify-center"
-               style={{
-                 backgroundImage: `url(${heroImage})`,
-                 backgroundSize: 'cover',
-                 backgroundPosition: 'center',
-                 backgroundRepeat: 'no-repeat'
-               }}>
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-black sm:font-bold mt-4 mb-4 md:mb-6 leading-tight"
-          >
-            <span className="block md:inline">Affordable Healthcare</span>
-            <span className="block text-blue-300 md:inline md:ml-2">For Every Indian Family</span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-blue-100 max-w-2xl mx-auto leading-relaxed"
-          >
-            MCS Discount Cards - Saving you up to 25% on medical expenses through our trusted network of healthcare providers
-          </motion.p>
+        {/* Full Height Banner */}
+        <section className="min-h-screen relative flex items-center justify-center"
+          style={{
+            backgroundImage: `url(${heroImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}>
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
+          <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-black sm:font-bold mt-4 mb-4 md:mb-6 leading-tight"
+            >
+              <span className="block md:inline">Affordable Healthcare</span>
+              <span className="block text-blue-300 md:inline md:ml-2">For Every Indian Family</span>
+            </motion.h1>
 
-          <motion.div 
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-blue-100 max-w-2xl mx-auto leading-relaxed"
+            >
+              MCS Discount Cards - Saving you up to 25% on medical expenses through our trusted network of healthcare providers
+            </motion.p>
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -153,7 +153,7 @@ const Index = () => {
                 </motion.button>
               </Link>
 
-              {/* Button 2 */}
+              {/* HIDDEN: Become a Member button (member feature)
               <Link to="/coming-soon" className="w-full sm:flex-1">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -175,13 +175,14 @@ const Index = () => {
                   <Users className="w-4 h-4" />
                 </motion.button>
               </Link>
+              */}
 
               {/* Button 3 */}
               <Link to="/partner/register" className="w-full sm:flex-1">
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    className="
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="
       w-full h-full
       min-w-[240px]
       border-2 border-white text-white
@@ -192,143 +193,152 @@ const Index = () => {
       flex items-center justify-center gap-2 md:gap-3
       text-center
     "
-  >
-    <div className="flex flex-col leading-tight">
-      <span>Doctors & Dentists</span>
-      <span>Join as Providers/Partners</span>
-    </div>
+                >
+                  <div className="flex flex-col leading-tight">
+                    <span>Doctors & Dentists</span>
+                    <span>Join as Providers/Partners</span>
+                  </div>
 
-    <Stethoscope className="w-4 h-4" />
-  </motion.button>
-</Link>
+                  <Stethoscope className="w-4 h-4" />
+                </motion.button>
+              </Link>
             </motion.div>
 
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-2xl mx-auto pb-8 md:pb-0"
-          >
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl md:text-2xl font-bold">25%</div>
-              <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Max Savings</div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-2xl mx-auto pb-8 md:pb-0"
+            >
+              <div className="text-center">
+                <div className="text-xl sm:text-2xl md:text-2xl font-bold">25%</div>
+                <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Max Savings</div>
+              </div>
+              {/* HIDDEN: Yearly cost stat (member-specific)
             <div className="text-center">
               <div className="text-xl sm:text-2xl md:text-2xl font-bold">₹365</div>
               <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Yearly Cost</div>
             </div>
-            <div className="text-center">
-              <div className="text-xl sm:text-2xl md:text-2xl font-bold">1000+</div>
-              <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Partners</div>
-            </div>
+            */}
+              <div className="text-center">
+                <div className="text-xl sm:text-2xl md:text-2xl font-bold">1000+</div>
+                <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Partners</div>
+              </div>
+              {/* HIDDEN: Members count stat
             <div className="text-center">
               <div className="text-xl sm:text-2xl md:text-2xl font-bold">50K+</div>
               <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Members</div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why Choose MCS Section */}
-      <section className="py-12 sm:py-14 md:py-16 bg-white px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 sm:mb-12"
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Why Choose MCS Discount Cards?
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-              Experience healthcare savings like never before with our comprehensive benefits
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-gradient-to-br from-white to-blue-50 p-4 sm:p-5 md:p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="w-12 h-12 sm:w-13 sm:h-13 md:w-14 md:h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-3 md:mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
+            */}
+              <div className="text-center">
+                <div className="text-xl sm:text-2xl md:text-2xl font-bold">50K+</div>
+                <div className="text-blue-200 text-xs sm:text-sm md:text-sm">Happy Families</div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Free Dental Consultation Highlight */}
-      <section className="py-12 sm:py-14 md:py-16 bg-gradient-to-r from-green-50 to-emerald-50 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-10"
-          >
-            <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
-              <Crown className="w-4 h-4" />
-              EXCLUSIVE BENEFIT
+        {/* Why Choose MCS Section */}
+        <section className="py-12 sm:py-14 md:py-16 bg-white px-4">
+          <div className="container mx-auto max-w-6xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10 sm:mb-12"
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+                Why Choose MCS Discount Cards?
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                Experience healthcare savings like never before with our comprehensive benefits
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-br from-white to-blue-50 p-4 sm:p-5 md:p-6 rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="w-12 h-12 sm:w-13 sm:h-13 md:w-14 md:h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-3 md:mb-4">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 md:mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              ))}
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 mb-3 sm:mb-4">
-              🎁 FREE Dental Consultation For Life
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-green-700 max-w-3xl mx-auto leading-relaxed">
-              Get <span className="font-bold text-green-800 text-xl">unlimited free dental consultations</span> throughout the year at our partner dental clinics.
-              No limits, no hidden costs - just quality dental care when you need it.
-            </p>
-          </motion.div>
+          </div>
+        </section>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-xl border-2 border-green-200"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Stethoscope className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+        {/* Free Dental Consultation Highlight */}
+        <section className="py-12 sm:py-14 md:py-16 bg-gradient-to-r from-green-50 to-emerald-50 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8 sm:mb-10"
+            >
+              <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
+                <Crown className="w-4 h-4" />
+                EXCLUSIVE BENEFIT
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-800 mb-3 sm:mb-4">
+                🎁 FREE Dental Consultation For Life
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-green-700 max-w-3xl mx-auto leading-relaxed">
+                Get <span className="font-bold text-green-800 text-xl">unlimited free dental consultations</span> throughout the year at our partner dental clinics.
+                No limits, no hidden costs - just quality dental care when you need it.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-xl border-2 border-green-200"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Stethoscope className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Expert Dentists</h3>
+                  <p className="text-gray-600 text-sm sm:text-base">Consult with qualified dental professionals across our network</p>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Expert Dentists</h3>
-                <p className="text-gray-600 text-sm sm:text-base">Consult with qualified dental professionals across our network</p>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Unlimited Visits</h3>
+                  <p className="text-gray-600 text-sm sm:text-base">No limit on consultation visits throughout your membership year</p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Verified Quality</h3>
+                  <p className="text-gray-600 text-sm sm:text-base">All partner dentists are verified and maintain high standards</p>
+                </div>
               </div>
 
-              <div className="text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Unlimited Visits</h3>
-                <p className="text-gray-600 text-sm sm:text-base">No limit on consultation visits throughout your membership year</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Verified Quality</h3>
-                <p className="text-gray-600 text-sm sm:text-base">All partner dentists are verified and maintain high standards</p>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
+              <div className="mt-8 text-center">
+                {/* HIDDEN: Get FREE Dental Care button (member signup link)
               <Link to="/coming-soon">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -339,153 +349,45 @@ const Index = () => {
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.button>
               </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Available Plans Section */}
-      <section className="py-12 sm:py-14 md:py-16 bg-gray-50 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10 sm:mb-12"
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Choose Your Plan
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600">
-              Flexible plans to suit your healthcare needs
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 md:gap-8 max-w-4xl mx-auto">
-            {/* Individual Plan */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border-2 border-blue-200 flex flex-col"
-            >
-              <div className="flex-grow">
-                <div className="text-center mb-4 md:mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Individual Plan</h3>
-                  <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">₹365</div>
-                  <div className="text-gray-600 text-sm md:text-base">{plans[0].duration}</div>
-                </div>
-
-                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                  {plans[0].features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 sm:gap-3">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm md:text-base">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+              */}
+                <Link to="/find-doctor">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-green-700 transition-colors inline-flex items-center gap-2"
+                  >
+                    Find a Partner Dentist
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </motion.button>
+                </Link>
               </div>
-
-              <Link to="/coming-soon" className="w-full">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-blue-600 text-white py-3 md:py-4 rounded-xl font-semibold text-sm md:text-base hover:bg-blue-700 transition-colors"
-                >
-                  Get Individual Plan
-                </motion.button>
-              </Link>
-            </motion.div>
-
-            {/* Family Plan */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white shadow-xl relative flex flex-col"
-            >
-              {plans[1].popular && (
-                <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="bg-yellow-400 text-blue-900 px-3 md:px-4 py-1 md:py-2 rounded-full font-bold text-xs md:text-sm flex items-center gap-1 md:gap-2">
-                    <Crown className="w-3 h-3 md:w-4 md:h-4" />
-                    MOST POPULAR
-                  </div>
-                </div>
-              )}
-
-              <div className="flex-grow pt-2 md:pt-0">
-                <div className="text-center mb-4 md:mb-6">
-                  <h3 className="text-xl md:text-2xl font-bold mb-2">Family Plan</h3>
-
-                  <div className="bg-white/10 rounded-xl p-3 md:p-4 mb-4">
-                    <div className="flex items-center justify-between mb-2 md:mb-3">
-                      <span className="font-semibold text-sm md:text-base">Family Members</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setFamilyMembers(Math.max(1, familyMembers - 1))}
-                          className="w-7 h-7 md:w-8 md:h-8 bg-white/20 rounded flex items-center justify-center hover:bg-white/30 transition-colors text-sm md:text-base"
-                        >
-                          -
-                        </button>
-                        <span className="font-bold text-base md:text-lg w-6 md:w-8 text-center">{familyMembers}</span>
-                        <button
-                          onClick={() => setFamilyMembers(familyMembers + 1)}
-                          className="w-7 h-7 md:w-8 md:h-8 bg-white/20 rounded flex items-center justify-center hover:bg-white/30 transition-colors text-sm md:text-base"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <div className="text-2xl md:text-3xl font-bold">₹{calculateFamilyPrice(familyMembers)}</div>
-                    <div className="text-white/80 text-xs md:text-sm">total per year</div>
-                    {familyMembers > 1 && (
-                      <div className="text-green-300 text-xs md:text-sm mt-1">
-                        Save ₹{365 * familyMembers * 0.10} with family discount
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                  {plans[1].features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 sm:gap-3">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm md:text-base">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <Link to="/coming-soon" className="w-full">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-white text-blue-600 py-3 md:py-4 rounded-xl font-semibold text-sm md:text-base hover:bg-gray-100 transition-colors"
-                >
-                  Get Family Plan
-                </motion.button>
-              </Link>
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Additional Sections */}
-      <section className="py-12 sm:py-14 md:py-16 bg-white px-4">
-        <div className="container mx-auto max-w-6xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6">
-              Ready to Start Your Healthcare Savings Journey?
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-7 md:mb-8 max-w-2xl mx-auto">
-              Join thousands of satisfied members who are already saving on their medical expenses
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+        {/* HIDDEN: Available Plans Section — membership pricing (member feature)
+      <section className="py-12 sm:py-14 md:py-16 bg-gray-50 px-4">
+        ... Individual Plan + Family Plan cards ...
+      </section>
+      */}
+
+        {/* Additional Sections */}
+        <section className="py-12 sm:py-14 md:py-16 bg-white px-4">
+          <div className="container mx-auto max-w-6xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6">
+                Ready to Start Your Healthcare Savings Journey?
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-7 md:mb-8 max-w-2xl mx-auto">
+                Join thousands of satisfied members who are already saving on their medical expenses
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                {/* HIDDEN: Get Started Now button (leads to member signup /coming-soon)
               <Link to="/coming-soon" className="w-full sm:w-auto">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -495,20 +397,30 @@ const Index = () => {
                   Get Started Now
                 </motion.button>
               </Link>
-              <Link to="/contact" className="w-full sm:w-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full border-2 border-gray-300 text-gray-700 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
-                >
-                  Contact Support
-                </motion.button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+              */}
+                <Link to="/partner/register" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Join as Doctor / Partner
+                  </motion.button>
+                </Link>
+                <Link to="/contact" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full border-2 border-gray-300 text-gray-700 px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                  >
+                    Contact Support
+                  </motion.button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      </div>
     </>
   );
 };

@@ -16,6 +16,7 @@ const Footer = () => {
             </p>
           </div>
 
+          {/* HIDDEN: For Members column - member feature hidden
           <div>
             <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">For Members</h3>
             <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-400">
@@ -25,6 +26,7 @@ const Footer = () => {
               <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
             </ul>
           </div>
+          */}
 
           <div>
             <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">For Partners</h3>
@@ -39,7 +41,9 @@ const Footer = () => {
             <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-400">
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
               <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
+              {/* HIDDEN: Member login link
               <li><Link to="/login" className="hover:text-white transition-colors">Login</Link></li>
+              */}
             </ul>
           </div>
         </div>
@@ -49,7 +53,7 @@ const Footer = () => {
             &copy; 2025 Medicostsaver. All rights reserved.
           </p>
           <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="text-gray-400 text-xs sm:text-sm">Developed by 
+            <span className="text-gray-400 text-xs sm:text-sm">Developed by
             </span>
             <a
               href="https://koderspark.in"
@@ -57,7 +61,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors text-xs sm:text-sm font-medium"
             >
-              
+
               <div
                 className="w-4 h-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-sm flex items-center justify-center"
                 style={{ display: 'none' }}
