@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Stethoscope, Pill, Microscope, ArrowLeft, Upload, CheckCircle, AlertCircle, Shield, Users, Clock, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import ClaimListingStep from "@/components/ClaimListingStep";
 
 type Role = "doctor" | "dentist" | "diagnostic" | "pharmacy";
 
@@ -80,7 +81,20 @@ const PartnerRegister = () => {
   const [termsDialogOpen, setTermsDialogOpen] = useState(false);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
+  // Claim process state
+  const [showClaimStep, setShowClaimStep] = useState(false);
+
   const districtsForSelected = stateValue && stateDistricts[stateValue] ? stateDistricts[stateValue] : [];
+
+  const handleRoleSelection = (selectedRole: Role) => {
+    setRole(selectedRole);
+    // Only doctors and dentists are currently listed in the directory to claim
+    if (selectedRole === 'doctor' || selectedRole === 'dentist') {
+      setShowClaimStep(true);
+    } else {
+      setShowClaimStep(false);
+    }
+  };
 
   const resetForm = () => {
     setRole("");
@@ -211,13 +225,15 @@ const PartnerRegister = () => {
       });
 
       if (!res.ok) {
-        let text: string = await res.text();
+        let msg = 'Registration failed';
         try {
-          text = JSON.parse(text);
+          const body = await res.json();
+          msg = body?.message || msg;
         } catch (e) {
-          // Ignored: text remains as string
+          // Fallback to text if JSON parsing fails
+          const text = await res.text();
+          msg = text || msg;
         }
-        const msg = (typeof text === 'object' && text?.message) ? text.message : text || 'Registration failed';
         setDialogData({ success: false, message: String(msg) });
         setDialogOpen(true);
         setLoading(false);
@@ -309,8 +325,8 @@ const PartnerRegister = () => {
                     </p>
                   </div>
                 </div>
-                
-                
+
+
               </div>
               <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-amber-100 rounded-lg border border-amber-300">
                 <p className="text-amber-800 text-xs sm:text-sm font-medium">
@@ -321,17 +337,17 @@ const PartnerRegister = () => {
             </CardContent>
           </Card>
         </div>
-        
+
         <div className=" flex justify-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 px-2">
           {[
             { role: 'doctor' as Role, icon: Stethoscope, title: 'Doctor', desc: 'Register as a medical practitioner and join our network' },
             { role: 'dentist' as Role, icon: Stethoscope, title: 'Dentist', desc: 'Register as a dental practitioner and join our network' },
-            
+
           ].map(({ role: roleOption, icon: Icon, title, desc }) => (
             <div
               key={roleOption}
               className="group cursor-pointer relative bg-white rounded-xl sm:rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-xl sm:hover:shadow-2xl hover:scale-105 hover:border-blue-300"
-              onClick={() => setRole(roleOption)}
+              onClick={() => handleRoleSelection(roleOption)}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative z-10">
@@ -357,9 +373,9 @@ const PartnerRegister = () => {
         <Card className="shadow-xl sm:shadow-2xl border-0 rounded-2xl sm:rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white pb-4 sm:pb-6 md:pb-8 px-4 sm:px-6">
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4">
-              <Button 
-                variant="ghost" 
-                onClick={() => setRole('')} 
+              <Button
+                variant="ghost"
+                onClick={() => setRole('')}
                 className="text-white hover:bg-white/20 rounded-full p-1 sm:p-2 transition-all duration-200"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -372,7 +388,7 @@ const PartnerRegister = () => {
               </div>
             </div>
           </CardHeader>
-          
+
           <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8">
             <div className="space-y-6 sm:space-y-8">
               {/* Personal Details Section */}
@@ -384,19 +400,19 @@ const PartnerRegister = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Full Name *</Label>
-                    <Input 
-                      value={personName} 
-                      onChange={(e) => setPersonName(e.target.value)} 
+                    <Input
+                      value={personName}
+                      onChange={(e) => setPersonName(e.target.value)}
                       placeholder="Responsible person / Doctor name"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Age *</Label>
-                    <Input 
-                      type="number" 
-                      value={String(personAge || '')} 
-                      onChange={(e) => setPersonAge(e.target.value ? Number(e.target.value) : '')} 
+                    <Input
+                      type="number"
+                      value={String(personAge || '')}
+                      onChange={(e) => setPersonAge(e.target.value ? Number(e.target.value) : '')}
                       placeholder="Age"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
@@ -404,9 +420,9 @@ const PartnerRegister = () => {
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Sex *</Label>
                     <div className="relative">
-                      <select 
+                      <select
                         className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base appearance-none bg-white"
-                        value={personSex} 
+                        value={personSex}
                         onChange={(e) => setPersonSex(e.target.value)}
                       >
                         <option value="">Select</option>
@@ -423,9 +439,9 @@ const PartnerRegister = () => {
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Date of Birth *</Label>
-                    <Input 
-                      type="date" 
-                      value={personDOB} 
+                    <Input
+                      type="date"
+                      value={personDOB}
                       onChange={(e) => setPersonDOB(e.target.value)}
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
@@ -444,19 +460,19 @@ const PartnerRegister = () => {
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">
                       {role === 'doctor' || role === 'dentist' ? 'Clinic Name *' : 'Center/Business Name *'}
                     </Label>
-                    <Input 
-                      value={role === 'doctor' || role === 'dentist' ? clinicName : centerName} 
-                      onChange={(e) => role === 'doctor' || role === 'dentist' ? setClinicName(e.target.value) : setCenterName(e.target.value)} 
+                    <Input
+                      value={role === 'doctor' || role === 'dentist' ? clinicName : centerName}
+                      onChange={(e) => role === 'doctor' || role === 'dentist' ? setClinicName(e.target.value) : setCenterName(e.target.value)}
                       placeholder={role === 'doctor' || role === 'dentist' ? 'Clinic / Practice name' : 'Diagnostic center or pharmacy name'}
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
-                  
+
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Address *</Label>
-                    <Input 
-                      value={address} 
-                      onChange={(e) => setAddress(e.target.value)} 
+                    <Input
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       placeholder="Full address"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
@@ -466,9 +482,9 @@ const PartnerRegister = () => {
                     <div className="space-y-1.5 sm:space-y-2">
                       <Label className="text-xs sm:text-sm font-medium text-gray-700">State *</Label>
                       <div className="relative">
-                        <select 
+                        <select
                           className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base appearance-none bg-white"
-                          value={stateValue} 
+                          value={stateValue}
                           onChange={(e) => { setStateValue(e.target.value); setDistrict(''); setCustomDistrict(''); }}
                         >
                           <option value="">Select state</option>
@@ -486,9 +502,9 @@ const PartnerRegister = () => {
                       <Label className="text-xs sm:text-sm font-medium text-gray-700">District *</Label>
                       {districtsForSelected.length > 0 ? (
                         <div className="relative">
-                          <select 
+                          <select
                             className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base appearance-none bg-white"
-                            value={district} 
+                            value={district}
                             onChange={(e) => setDistrict(e.target.value)}
                           >
                             <option value="">Select district</option>
@@ -502,9 +518,9 @@ const PartnerRegister = () => {
                           </div>
                         </div>
                       ) : (
-                        <Input 
-                          value={customDistrict} 
-                          onChange={(e) => setCustomDistrict(e.target.value)} 
+                        <Input
+                          value={customDistrict}
+                          onChange={(e) => setCustomDistrict(e.target.value)}
                           placeholder="District"
                           className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                         />
@@ -512,9 +528,9 @@ const PartnerRegister = () => {
                     </div>
                     <div className="space-y-1.5 sm:space-y-2">
                       <Label className="text-xs sm:text-sm font-medium text-gray-700">Pincode *</Label>
-                      <Input 
-                        value={pincode} 
-                        onChange={(e) => setPincode(e.target.value)} 
+                      <Input
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
                         placeholder="Pin / ZIP code"
                         className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                       />
@@ -643,9 +659,9 @@ const PartnerRegister = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                     <div className="space-y-1.5 sm:space-y-2">
                       <Label className="text-xs sm:text-sm font-medium text-gray-700">Website</Label>
-                      <Input 
-                        value={website} 
-                        onChange={(e) => setWebsite(e.target.value)} 
+                      <Input
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
                         placeholder="https://"
                         className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                       />
@@ -663,38 +679,38 @@ const PartnerRegister = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Contact Email *</Label>
-                    <Input 
-                      value={contactEmail} 
-                      onChange={(e) => setContactEmail(e.target.value)} 
+                    <Input
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
                       placeholder="contact@you.com"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Contact Phone *</Label>
-                    <Input 
-                      value={contactPhone} 
-                      onChange={(e) => setContactPhone(e.target.value)} 
+                    <Input
+                      value={contactPhone}
+                      onChange={(e) => setContactPhone(e.target.value)}
                       placeholder="Phone number"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Login Email *</Label>
-                    <Input 
-                      type="email" 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)} 
-                      placeholder="email@domain.com" 
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="email@domain.com"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Password *</Label>
-                    <Input 
-                      type="password" 
-                      value={password} 
-                      onChange={(e) => setPassword(e.target.value)} 
+                    <Input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Minimum 6 characters"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
@@ -711,18 +727,18 @@ const PartnerRegister = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Registering Authority / Council Name *</Label>
-                    <Input 
-                      value={councilName} 
-                      onChange={(e) => setCouncilName(e.target.value)} 
+                    <Input
+                      value={councilName}
+                      onChange={(e) => setCouncilName(e.target.value)}
                       placeholder="Council or authority"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Registration / Council Number *</Label>
-                    <Input 
-                      value={councilNumber} 
-                      onChange={(e) => setCouncilNumber(e.target.value)} 
+                    <Input
+                      value={councilNumber}
+                      onChange={(e) => setCouncilNumber(e.target.value)}
                       placeholder="Registration number"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                     />
@@ -859,21 +875,21 @@ const PartnerRegister = () => {
                 <div className="space-y-4 sm:space-y-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Discount Amount *</Label>
-                    <Input 
-                      value={discountAmount} 
-                      onChange={(e) => setDiscountAmount(e.target.value)} 
+                    <Input
+                      value={discountAmount}
+                      onChange={(e) => setDiscountAmount(e.target.value)}
                       placeholder="e.g., 10% off, ₹500 off, etc."
                       className="transition-all duration-200 focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base"
                     />
                     <p className="text-xs text-gray-500">Specify the discount you are willing to provide to MEDI COST SAVER members</p>
                   </div>
-                  
+
                   <div className="space-y-3 sm:space-y-4">
                     <Label className="text-xs sm:text-sm font-medium text-gray-700">Services/Procedures for Discount *</Label>
                     <div className="flex flex-col sm:flex-row gap-2">
-                      <Input 
-                        value={currentDiscountItem} 
-                        onChange={(e) => setCurrentDiscountItem(e.target.value)} 
+                      <Input
+                        value={currentDiscountItem}
+                        onChange={(e) => setCurrentDiscountItem(e.target.value)}
                         placeholder="e.g., Consultation, Blood Test, X-Ray, etc."
                         className="transition-all duration-200 focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base flex-1"
                         onKeyPress={(e) => {
@@ -886,7 +902,7 @@ const PartnerRegister = () => {
                           }
                         }}
                       />
-                      <Button 
+                      <Button
                         type="button"
                         onClick={() => {
                           if (currentDiscountItem.trim()) {
@@ -900,15 +916,15 @@ const PartnerRegister = () => {
                       </Button>
                     </div>
                     <p className="text-xs text-gray-500">Add services/procedures you want to offer discount on. Press Enter or click Add to include them.</p>
-                    
+
                     {discountItems.length > 0 && (
                       <div className="space-y-1.5 sm:space-y-2">
                         <Label className="text-xs sm:text-sm font-medium text-gray-700">Added Services:</Label>
                         <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {discountItems.map((item, index) => (
-                            <Badge 
-                              key={index} 
-                              variant="secondary" 
+                            <Badge
+                              key={index}
+                              variant="secondary"
                               className="flex items-center gap-1 sm:gap-2 bg-green-100 text-green-800 hover:bg-green-200 px-2 sm:px-3 py-0.5 sm:py-1 text-xs"
                             >
                               {item}
@@ -969,8 +985,8 @@ const PartnerRegister = () => {
               )}
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200">
-                <Button 
-                  onClick={handleSubmit} 
+                <Button
+                  onClick={handleSubmit}
                   disabled={loading || !acceptTerms}
                   className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
@@ -983,8 +999,8 @@ const PartnerRegister = () => {
                     'Submit Registration'
                   )}
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => { resetForm(); setStatusMessage(null); }}
                   className="py-2 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-200 hover:bg-gray-50 hover:shadow-md text-sm sm:text-base"
                 >
@@ -1013,11 +1029,11 @@ const PartnerRegister = () => {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button 
+              <Button
                 className={`w-full rounded-lg sm:rounded-xl text-sm sm:text-base ${dialogData?.success ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
-                onClick={() => { 
-                  setDialogOpen(false); 
-                  if (dialogData?.success) navigate('/partner'); 
+                onClick={() => {
+                  setDialogOpen(false);
+                  if (dialogData?.success) navigate('/partner');
                 }}
               >
                 {dialogData?.success ? 'Go to Partner Portal' : 'Close'}
@@ -1033,7 +1049,17 @@ const PartnerRegister = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-background">
-        {!role ? selection : form}
+        {!role ? selection : showClaimStep ? (
+          <ClaimListingStep
+            role={role as any}
+            onContinueNew={() => setShowClaimStep(false)}
+            onClaimSuccess={(token) => {
+              localStorage.setItem('partnerToken', token);
+              navigate('/partner/dashboard');
+            }}
+            onBack={() => setRole('')}
+          />
+        ) : form}
       </div>
 
       {/* Terms and Conditions Dialog */}
@@ -1047,8 +1073,8 @@ const PartnerRegister = () => {
               Please read all terms and conditions carefully before accepting.
             </DialogDescription>
           </DialogHeader>
-          
-          <div 
+
+          <div
             className="flex-1 overflow-y-auto max-h-96 p-4 border rounded-lg bg-gray-50 text-sm leading-relaxed"
             onScroll={(e) => {
               const element = e.currentTarget;
@@ -1304,10 +1330,10 @@ const PartnerRegister = () => {
               </div>
             </div>
           </div>
-          
+
           <DialogFooter className="flex gap-3">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setTermsDialogOpen(false);
                 setAcceptTerms(false);
@@ -1316,7 +1342,7 @@ const PartnerRegister = () => {
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={() => {
                 setTermsDialogOpen(false);
                 setAcceptTerms(true);

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Users, Building2, CreditCard, MessageCircle, Calendar, FileText, CheckCircle, XCircle, Eye, Download, Filter, Search, Upload, LayoutGrid, List } from "lucide-react";
+import { Heart, Users, Building2, CreditCard, MessageCircle, Calendar, FileText, CheckCircle, XCircle, Eye, Download, Filter, Search, Upload, LayoutGrid, List, Stethoscope, MapPin, Phone, Mail } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import React from 'react';
@@ -13,6 +13,8 @@ import { LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import AdminDoctorsDirectory from "@/components/AdminDoctorsDirectory";
+import AdminClaimsTab from "@/components/AdminClaimsTab";
+import AdminJobsTab from "@/components/AdminJobsTab";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -171,6 +173,13 @@ const Admin = () => {
   const [doctorBulkFile, setDoctorBulkFile] = React.useState<File | null>(null);
   const [isDoctorUploading, setIsDoctorUploading] = React.useState(false);
   const [doctorUploadResult, setDoctorUploadResult] = React.useState<any>(null);
+
+  // Doctor Dashboard State
+  const [doctorStats, setDoctorStats] = React.useState({ total: 0, loading: true });
+  const [dashboardDoctors, setDashboardDoctors] = React.useState<any[]>([]);
+  const [doctorSearchTerm, setDoctorSearchTerm] = React.useState("");
+  const [doctorPage, setDoctorPage] = React.useState(1);
+  const [doctorTotalPages, setDoctorTotalPages] = React.useState(1);
 
   const handleBulkDoctorUpload = async () => {
     if (!doctorBulkFile) return;
@@ -367,6 +376,27 @@ const Admin = () => {
     }
   };
 
+  const loadDoctors = async (page: number = 1, search: string = "") => {
+    try {
+      setDoctorStats(prev => ({ ...prev, loading: true }));
+      const token = localStorage.getItem('token');
+      const params = new URLSearchParams({ page: page.toString(), limit: '10' });
+      if (search) params.append('name', search);
+      const res = await fetch(apiUrl(`api/doctors/admin?${params}`), {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setDashboardDoctors(data.data || []);
+      setDoctorStats({ total: data.total || 0, loading: false });
+      setDoctorTotalPages(data.pages || 1);
+      setDoctorPage(page);
+    } catch (err) {
+      console.error('Load doctors error:', err);
+      setDoctorStats(prev => ({ ...prev, loading: false }));
+    }
+  };
+
   React.useEffect(() => {
     loadStats();
     loadRecentMembers();
@@ -375,6 +405,7 @@ const Admin = () => {
     loadQueryStats();
     loadAllUsers();
     loadAllPartners();
+    loadDoctors();
   }, []);
 
   // Action functions (same as before)
@@ -538,7 +569,7 @@ const Admin = () => {
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
                   {stats.map((stat, idx) => (
                     <Card
                       key={idx}
@@ -559,9 +590,154 @@ const Admin = () => {
                       </CardContent>
                     </Card>
                   ))}
+                  {/* Doctor count stat card */}
+                  <Card className="border-0 shadow-sm rounded-xl sm:rounded-2xl hover:shadow-md transition-all duration-200">
+                    <CardContent className="p-3 sm:p-4 lg:p-6">
+                      <div className="flex items-start justify-between">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs sm:text-sm text-muted-foreground mb-1 truncate">Uploaded Doctors</div>
+                          <div className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 truncate">
+                            {doctorStats.loading ? "..." : doctorStats.total}
+                          </div>
+                          <div className="text-xs text-emerald-600">Admin uploaded</div>
+                        </div>
+                        <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0 ml-2 text-emerald-600">
+                          <Stethoscope className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
 
-                {/* Optional: Add recent activity here if dashboard feels empty */}
+                {/* Uploaded Doctors Section */}
+                <Card className="border-0 shadow-sm rounded-xl sm:rounded-2xl">
+                  <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-emerald-100 rounded-lg">
+                          <Stethoscope className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl">Uploaded Doctors</CardTitle>
+                          <CardDescription>
+                            {doctorStats.total} doctor{doctorStats.total !== 1 ? 's' : ''} bulk-uploaded by admin
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="relative w-full sm:w-64">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder="Search by doctor name..."
+                          value={doctorSearchTerm}
+                          onChange={(e) => {
+                            setDoctorSearchTerm(e.target.value);
+                            loadDoctors(1, e.target.value);
+                          }}
+                          className="w-full pl-10 pr-4 py-2 text-sm border border-muted-foreground/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/40 bg-white"
+                        />
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-4 p-0 sm:p-0">
+                    {dashboardDoctors.length === 0 ? (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <Stethoscope className="h-14 w-14 mx-auto mb-4 opacity-30" />
+                        <p className="text-base font-medium">No doctors uploaded yet</p>
+                        <p className="text-sm">Use the Manage Doctors tab to bulk upload doctors via Excel</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b bg-muted/30">
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground">#</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Name</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden sm:table-cell">Category</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden md:table-cell">City / State</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden lg:table-cell">Phone</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden lg:table-cell">Email</th>
+                                <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Uploaded</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {dashboardDoctors.map((doc, idx) => (
+                                <tr key={doc._id} className="border-b hover:bg-muted/20 transition-colors">
+                                  <td className="px-4 py-3 text-muted-foreground text-xs">
+                                    {(doctorPage - 1) * 10 + idx + 1}
+                                  </td>
+                                  <td className="px-4 py-3">
+                                    <div className="font-medium text-gray-900">{doc.name || '—'}</div>
+                                    {doc.designation && (
+                                      <div className="text-xs text-muted-foreground">{doc.designation}</div>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-3 hidden sm:table-cell">
+                                    {doc.category ? (
+                                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                                        {doc.category}
+                                      </span>
+                                    ) : '—'}
+                                  </td>
+                                  <td className="px-4 py-3 hidden md:table-cell">
+                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                      <MapPin className="h-3 w-3 flex-shrink-0" />
+                                      <span>{[doc.city, doc.state].filter(Boolean).join(', ') || '—'}</span>
+                                    </div>
+                                  </td>
+                                  <td className="px-4 py-3 hidden lg:table-cell">
+                                    {doc.phone ? (
+                                      <div className="flex items-center gap-1 text-xs">
+                                        <Phone className="h-3 w-3 text-muted-foreground" />
+                                        {doc.phone}
+                                      </div>
+                                    ) : '—'}
+                                  </td>
+                                  <td className="px-4 py-3 hidden lg:table-cell">
+                                    {doc.email ? (
+                                      <div className="flex items-center gap-1 text-xs">
+                                        <Mail className="h-3 w-3 text-muted-foreground" />
+                                        <span className="truncate max-w-[150px]">{doc.email}</span>
+                                      </div>
+                                    ) : '—'}
+                                  </td>
+                                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                                    {doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : '—'}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        {/* Pagination */}
+                        {doctorTotalPages > 1 && (
+                          <div className="flex items-center justify-between px-4 py-3 border-t">
+                            <span className="text-xs text-muted-foreground">
+                              Page {doctorPage} of {doctorTotalPages} &bull; {doctorStats.total} total doctors
+                            </span>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => loadDoctors(doctorPage - 1, doctorSearchTerm)}
+                                disabled={doctorPage <= 1}
+                                className="px-3 py-1 text-xs border rounded-lg disabled:opacity-40 hover:bg-muted/50 transition-colors"
+                              >
+                                Previous
+                              </button>
+                              <button
+                                onClick={() => loadDoctors(doctorPage + 1, doctorSearchTerm)}
+                                disabled={doctorPage >= doctorTotalPages}
+                                className="px-3 py-1 text-xs border rounded-lg disabled:opacity-40 hover:bg-muted/50 transition-colors"
+                              >
+                                Next
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* Main Tabs List - Visible on management sections */}
@@ -1002,6 +1178,16 @@ const Admin = () => {
                 </Card>
               </TabsContent>
 
+              {/* Claims Tab */}
+              <TabsContent value="claims" className="animate-in fade-in-50">
+                <AdminClaimsTab />
+              </TabsContent>
+
+              {/* Jobs Tab */}
+              <TabsContent value="jobs" className="animate-in fade-in-50">
+                <AdminJobsTab />
+              </TabsContent>
+
               {/* Manage Users Tab */}
               <TabsContent value="manage-users" className="animate-in fade-in-50">
                 <Card className="border-0 shadow-lg rounded-xl sm:rounded-2xl">
@@ -1262,7 +1448,7 @@ const Admin = () => {
             </Tabs>
           </div>
 
-{/* Dialogs Removed */}
+          {/* Dialogs Removed */}
 
           {/* Query View Dialog */}
           <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>

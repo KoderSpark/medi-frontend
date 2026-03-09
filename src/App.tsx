@@ -22,6 +22,7 @@ import MembershipComingSoon from "./pages/MembershipComingSoon";
 import FAQ from "./pages/FAQ";
 import ContactUs from "./pages/ContactUs";
 import FindDoctor from "./pages/FindDoctor";
+import Jobs from "./pages/Jobs";
 import NavLayout from "./components/NavLayout";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
       { path: '/about', element: <AboutUs /> },
       { path: '/how-it-works', element: <HowItWorks /> },
       { path: '/find-doctor', element: <FindDoctor /> },
+      { path: '/jobs', element: <Jobs /> },
       { path: '/membership-fee', element: <MembershipFee /> },
       { path: '/faq', element: <FAQ /> },
       { path: '/contact', element: <ContactUs /> },

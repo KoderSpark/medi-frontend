@@ -47,6 +47,7 @@ const Navbar = () => {
           <div className="hidden md:flex gap-6 items-center flex-1 justify-center">
             <Link to="/" className="text-sm font-medium hover:text-primary">Home</Link>
             <Link to="/find-doctor" className="text-sm font-medium hover:text-primary">Find Doctor</Link>
+            <Link to="/jobs" className="text-sm font-medium hover:text-primary">Jobs</Link>
             <Link to="/about" className="text-sm font-medium hover:text-primary">About Us</Link>
             <Link to="/how-it-works" className="text-sm font-medium hover:text-primary">How It Works</Link>
             {/* HIDDEN: Membership Fee link - member feature hidden
@@ -140,6 +141,13 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Find Doctor
+              </Link>
+              <Link
+                to="/jobs"
+                className="block py-3 px-4 text-base font-medium hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors duration-200"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Jobs
               </Link>
               <Link
                 to="/about"

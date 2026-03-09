@@ -7,7 +7,9 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
-    Heart
+    Heart,
+    ShieldCheck,
+    Briefcase
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -25,6 +27,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, onTabChange, onL
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { id: 'partner-requests', label: 'Partners', icon: Building2 },
+        { id: 'claims', label: 'Claims', icon: ShieldCheck },
+        { id: 'jobs', label: 'Jobs', icon: Briefcase },
         { id: 'queries', label: 'Queries', icon: MessageCircle },
         { id: 'manage-users', label: 'Users', icon: Users },
     ];
