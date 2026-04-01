@@ -24,6 +24,7 @@ import ContactUs from "./pages/ContactUs";
 import FindDoctor from "./pages/FindDoctor";
 import Jobs from "./pages/Jobs";
 import NavLayout from "./components/NavLayout";
+import ClaimBusiness from "./pages/ClaimBusiness";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
   { path: '/partner/register', element: <PartnerRegister /> },
   { path: '/partner/login', element: <PartnerLogin /> },
   { path: '/partner/dashboard', element: <PartnerDashboard /> },
+  { path: '/claim-business', element: <ClaimBusiness /> },
   { path: '/admin/login', element: <AdminLogin /> },
   { path: '/admin/register', element: <AdminRegister /> },
   {

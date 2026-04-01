@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -11,9 +11,23 @@ const Footer = () => {
               <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
               <span className="text-lg sm:text-xl font-bold">Medi Cost Saver</span>
             </div>
-            <p className="text-gray-400 text-xs sm:text-sm">
+            <p className="text-gray-400 text-xs sm:text-sm mb-6">
               Making healthcare affordable for every Indian family
             </p>
+            <div className="flex gap-4">
+              <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors" aria-label="Facebook">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors" aria-label="Twitter">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors" aria-label="Instagram">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors" aria-label="LinkedIn">
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
           </div>
 
           {/* HIDDEN: For Members column - member feature hidden
@@ -32,6 +46,7 @@ const Footer = () => {
             <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">For Partners</h3>
             <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-400">
               <li><Link to="/partner/register" className="hover:text-white transition-colors">Become a Partner</Link></li>
+              <li><Link to="/claim-business" className="hover:text-white transition-colors text-blue-400 font-medium">Claim Your Business</Link></li>
               <li><Link to="/partner/login" className="hover:text-white transition-colors">Login</Link></li>
             </ul>
           </div>
