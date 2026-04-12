@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Search, Phone, Mail, Building2, User } from "lucide-react";
+import { MapPin, Search, Phone, Mail, Building2, User, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 import { apiUrl } from "@/lib/api";
@@ -106,7 +106,12 @@ const FindDoctor = () => {
                                         />
                                     </div>
                                     <Button type="submit" size="lg" className="h-12 px-8 text-base font-semibold" disabled={loading}>
-                                        {loading ? "Searching..." : "Search"}
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                                Searching...
+                                            </>
+                                        ) : "Search"}
                                     </Button>
                                 </form>
                             </CardContent>
@@ -118,7 +123,12 @@ const FindDoctor = () => {
             {/* Results Section */}
             <section className="py-12 bg-background">
                 <div className="container mx-auto px-4">
-                    {doctors.length > 0 ? (
+                    {loading ? (
+                        <div className="flex flex-col items-center justify-center py-16 space-y-4">
+                            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                            <p className="text-lg font-medium text-muted-foreground">Searching for medical professionals...</p>
+                        </div>
+                    ) : doctors.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {doctors.map((doctor) => (
                                 <Card key={doctor._id} className="hover:shadow-md transition-shadow duration-200 border-border/50">
@@ -159,16 +169,16 @@ const FindDoctor = () => {
                                         {(doctor.phone || doctor.email) && (
                                             <div className="pt-3 border-t border-border mt-3 space-y-2">
                                                 {doctor.phone && (
-                                                    <div className="flex items-center gap-2 text-foreground font-medium">
+                                                    <a href={`tel:${doctor.phone}`} className="flex items-center gap-2 text-foreground font-medium hover:text-primary transition-colors">
                                                         <Phone className="h-4 w-4 text-primary" />
                                                         <span>{doctor.phone}</span>
-                                                    </div>
+                                                    </a>
                                                 )}
                                                 {doctor.email && (
-                                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                                    <a href={`mailto:${doctor.email}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
                                                         <Mail className="h-4 w-4" />
                                                         <span>{doctor.email}</span>
-                                                    </div>
+                                                    </a>
                                                 )}
                                             </div>
                                         )}
